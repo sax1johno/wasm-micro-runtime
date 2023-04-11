@@ -105,12 +105,7 @@ export class WASMStatementGen {
             this.WASMCompiler.wasmExpr.WASMExprGen(
                 stmt.ifCondition,
             ).binaryenRef;
-        if (binaryen.getExpressionType(wasmCond) === binaryen.f64) {
-            const module = this.WASMCompiler.module;
-            wasmCond = module.i32.eqz(
-                module.i32.eqz(module.i32.trunc_u_sat.f64(wasmCond)),
-            );
-        }
+        wasmCond = this.WASMCompiler.wasmExpr.generateCondition(wasmCond);
         const wasmIfTrue: binaryen.ExpressionRef = this.WASMStmtGen(
             stmt.ifIfTrue,
         );
@@ -201,10 +196,11 @@ export class WASMStatementGen {
         const scope = stmt.getScope() as Scope;
         this.currentFuncCtx.enterScope(scope);
 
-        const WASMCond: binaryen.ExpressionRef =
+        let WASMCond: binaryen.ExpressionRef =
             this.WASMCompiler.wasmExpr.WASMExprGen(
                 stmt.loopCondtion,
             ).binaryenRef;
+        WASMCond = this.WASMCompiler.wasmExpr.generateCondition(WASMCond);
         const WASMStmts: binaryen.ExpressionRef = this.WASMStmtGen(
             stmt.loopBody,
         );
@@ -242,9 +238,8 @@ export class WASMStatementGen {
         const scope = stmt.getScope() as Scope;
         this.currentFuncCtx.enterScope(scope);
 
-        let WASMCond: binaryen.ExpressionRef = this.WASMCompiler.module.nop();
-        let WASMIncrementor: binaryen.ExpressionRef =
-            this.WASMCompiler.module.nop();
+        let WASMCond: binaryen.ExpressionRef | undefined;
+        let WASMIncrementor: binaryen.ExpressionRef | undefined;
         let WASMStmts: binaryen.ExpressionRef = this.WASMCompiler.module.nop();
         if (stmt.forLoopInitializer !== null) {
             const init = this.WASMStmtGen(stmt.forLoopInitializer);

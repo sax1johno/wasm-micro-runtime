@@ -15,7 +15,7 @@ export namespace dyntype {
     // export type
     export const dyn_ctx_t = binaryen.i64; // binaryen.anyref
     export const dyn_value_t = binaryen.anyref;
-    export const dyn_type_t = binaryen.f64;
+    export const dyn_type_t = binaryen.i32;
     export const cvoid = binaryen.none;
     export const double = binaryen.f64;
     export const int = binaryen.i32;
@@ -98,10 +98,12 @@ export namespace structdyn {
         struct_get_dyn_f32 = 'struct_get_dyn_f32',
         struct_get_dyn_f64 = 'struct_get_dyn_f64',
         struct_get_dyn_anyref = 'struct_get_dyn_anyref',
+        struct_get_dyn_funcref = 'struct_get_dyn_funcref',
         struct_set_dyn_i32 = 'struct_set_dyn_i32',
         struct_set_dyn_i64 = 'struct_set_dyn_i64',
         struct_set_dyn_f32 = 'struct_set_dyn_f32',
         struct_set_dyn_f64 = 'struct_set_dyn_f64',
         struct_set_dyn_anyref = 'struct_set_dyn_anyref',
+        struct_set_dyn_funcref = 'struct_set_dyn_funcref',
     }
 }

@@ -36,7 +36,7 @@ export function importAnyLibAPI(module: binaryen.Module) {
         dyntype.dyntype_new_string,
         dyntype.module_name,
         dyntype.dyntype_new_string,
-        binaryen.createType([dyntype.dyn_ctx_t, dyntype.cstring]),
+        binaryen.createType([dyntype.dyn_ctx_t, dyntype.dyn_value_t]),
         dyntype.dyn_value_t,
     );
     module.addFunctionImport(
@@ -77,6 +77,13 @@ export function importAnyLibAPI(module: binaryen.Module) {
         dyntype.dyntype_to_number,
         binaryen.createType([dyntype.dyn_ctx_t, dyntype.dyn_value_t]),
         dyntype.double,
+    );
+    module.addFunctionImport(
+        dyntype.dyntype_is_undefined,
+        dyntype.module_name,
+        dyntype.dyntype_is_undefined,
+        binaryen.createType([dyntype.dyn_ctx_t, dyntype.dyn_value_t]),
+        dyntype.bool,
     );
     module.addFunctionImport(
         dyntype.dyntype_new_undefined,
@@ -164,7 +171,7 @@ export function importAnyLibAPI(module: binaryen.Module) {
             dyntype.cstring,
             dyntype.dyn_value_t,
         ]),
-        dyntype.dyn_value_t,
+        dyntype.bool,
     );
     module.addFunctionImport(
         dyntype.dyntype_get_property,
@@ -181,6 +188,17 @@ export function importAnyLibAPI(module: binaryen.Module) {
         dyntype.dyntype_has_property,
         dyntype.module_name,
         dyntype.dyntype_has_property,
+        binaryen.createType([
+            dyntype.dyn_ctx_t,
+            dyntype.dyn_value_t,
+            dyntype.cstring,
+        ]),
+        dyntype.int,
+    );
+    module.addFunctionImport(
+        dyntype.dyntype_delete_property,
+        dyntype.module_name,
+        dyntype.dyntype_delete_property,
         binaryen.createType([
             dyntype.dyn_ctx_t,
             dyntype.dyn_value_t,
@@ -317,6 +335,14 @@ export function importInfcLibAPI(module: binaryen.Module) {
     );
 
     module.addFunctionImport(
+        structdyn.StructDyn.struct_get_dyn_funcref,
+        structdyn.module_name,
+        structdyn.StructDyn.struct_get_dyn_funcref,
+        binaryen.createType([binaryen.anyref, binaryen.i32]),
+        binaryen.funcref,
+    );
+
+    module.addFunctionImport(
         structdyn.StructDyn.struct_set_dyn_i32,
         structdyn.module_name,
         structdyn.StructDyn.struct_set_dyn_i32,
@@ -353,6 +379,14 @@ export function importInfcLibAPI(module: binaryen.Module) {
         structdyn.module_name,
         structdyn.StructDyn.struct_set_dyn_anyref,
         binaryen.createType([binaryen.anyref, binaryen.i32, binaryen.anyref]),
+        binaryen.none,
+    );
+
+    module.addFunctionImport(
+        structdyn.StructDyn.struct_set_dyn_funcref,
+        structdyn.module_name,
+        structdyn.StructDyn.struct_set_dyn_anyref,
+        binaryen.createType([binaryen.anyref, binaryen.i32, binaryen.funcref]),
         binaryen.none,
     );
 }
